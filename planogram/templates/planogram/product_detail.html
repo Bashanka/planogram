@@ -1,0 +1,28 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <h1>Наименование: {{ product.title }}</h1>
+
+        <p><strong>Категория: </strong>{{ product.category }}</p>
+        <p><strong>Артикул: </strong> {{ product.vendor_code }}</p>
+        <p><strong>Изображение: </strong> <img src="{{ product.image.url }}" height="200px"></p>
+        <p><strong>Ширина: </strong> {{ product.width }}</p>
+        <p><strong>Высота: </strong> {{ product.height }}</p>
+        <p><strong>Длина: </strong> {{ product.length }}</p>
+
+
+        <button class="btn btn-primary">
+            <a href="{% url 'product_update' product.pk %}" style="color: white">
+                <strong>Изменить товар</strong>
+            </a>
+        </button>
+        <button class="btn btn-primary">
+            <a href="{% url 'product_delete' product.pk %}" style="color: white">
+                <strong>Удалить товар</strong>
+            </a>
+        </button>
+    {% else %}
+        <p>Авторизуйтесь, чтобы получить доступ к странице</p>
+    {% endif %}
+{% endblock %}

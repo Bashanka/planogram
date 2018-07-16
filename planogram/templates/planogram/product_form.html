@@ -1,0 +1,65 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    {% if product %}
+        <p id="categoryId" style="display: none">{{ product.category.id }}</p>
+    {% endif %}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h3>Создание/Изменение товара</h3>
+        <table>
+            <tr style="display: none">
+                <td><strong>Ref: </strong></td>
+                <td>{{ form.ref }}</td>
+            </tr>
+            <tr>
+                <td><strong>Наименование товара: </strong></td>
+                <td>{{ form.title }}</td>
+            </tr>
+            <tr>
+                <td><strong>Категория: </strong></td>
+                <td>
+                    <span><select id="categorySelect" name="category">
+                        {% include 'planogram/maker_category.html' %}
+                    </select></span>
+                    <a id="update_category" href="">
+                        <img src="/static/admin/img/icon-changelink.svg" alt="Изменить">
+                    </a>
+                    <a id="add_category" href="">
+                        <img src="/static/admin/img/icon-addlink.svg" alt="Добавить">
+                    </a>
+                    <a id="delete_category" href="">
+                        <img src="/static/admin/img/icon-deletelink.svg" alt="Удалить">
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Артикул: </strong></td>
+                <td>{{ form.vendor_code }}</td>
+            </tr>
+            <tr>
+                <td><strong>Изображение: </strong></td>
+                <td>{{ form.image }}</td>
+            </tr>
+            <tr>
+                <td><strong>Ширина: </strong></td>
+                <td>{{ form.width }}</td>
+            </tr>
+            <tr>
+                <td><strong>Высота: </strong></td>
+                <td>{{ form.height }}</td>
+            </tr>
+            <tr>
+                <td><strong>Длина: </strong></td>
+                <td>{{ form.length }}</td>
+            </tr>
+        </table>
+        <input type="submit" value="Отправить" class="btn btn-primary"/>
+    </form>
+    <div class="popup"></div>
+    {% load static %}
+    <script>window.CSRF_TOKEN = "{{ csrf_token }}";</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{% static 'js/product_form.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,36 @@
+<option value="all">--------</option>
+{% if category_list %}
+    <script>
+        console.log('ok');
+
+        function f() {
+            let category_info = {};
+            {% for category in category_list %}
+                category_info['{{ category.id }}'] = {
+                    cat_name: '{{ category.name }}',
+                    cat_parent: '{{ category.parent.id }}'
+                };
+            {% endfor %}
+
+            function select(parentID, deep) {
+                for (key in category_info) {
+                    if (category_info[key].cat_parent == parentID) {
+                        $('#categorySelect').append('<option value="' + key + '">' + "&nbsp;".repeat(deep * 3) + category_info[key].cat_name + '</option>');
+                        delete category_info[key];
+                        select(key, deep + 1);
+                    }
+                }
+            }
+
+            select("", 0);
+        }
+
+        f();
+    </script>
+{% endif %}
+
+{#{% if category_list %}#}
+{#    <script>#}
+{#    console.log("category");#}
+{#    </script>#}
+{#{% endif %}#}

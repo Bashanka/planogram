@@ -1,0 +1,31 @@
+<table class="table">
+    <thead class="bg-primary">
+    <th scope="col">Наименование</th>
+    <th scope="col">Категория</th>
+    <th scope="col">Артикул</th>
+    <th scope="col">Изображение</th>
+    <th scope="col">Ширина</th>
+    <th scope="col">Высота</th>
+    <th scope="col">Длина</th>
+    </thead>
+    <tbody>
+    {% for product in product_list %}
+    <tr>
+        <td><a href="{% url 'product-detail' product.pk %}" target="target_blank">{{ product.title }}</a></td>
+        <td>{{ product.category }}</td>
+        <td>{{ product.vendor_code }}</td>
+        <td><img src="{{ product.image.url }}" height="50"></td>
+        <td>{{ product.width }}</td>
+        <td>{{ product.height }}</td>
+        <td>{{ product.length }}</td>
+
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<p>
+    <a href="#" class="btn btn-primary" id="pr_l_btn_prev" {% if page == 1 %} style="visibility: hidden;"{% endif %} onclick="btn_prev()">Назад</a>
+    Страница <span id="cur_page">{{ page }}</span> из <span id="page_count" value="{{ product_count }}">{{ product_count }}</span>
+    <a href="#" class="btn btn-primary" id="pr_l_btn_next" {% if product_count <= 1 or product_count == page %} style="visibility: hidden;" {% endif %} onclick="btn_next()">Вперед</a>
+</p>

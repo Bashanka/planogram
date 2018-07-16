@@ -1,0 +1,50 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <h1>Каталог товаров</h1>
+
+        <a href="{% url 'product_create' %}" class="btn btn-primary">Создать товар</a>
+        <a href="{% url 'product_import' %}" class="btn btn-primary">Импортировать товары</a>
+        <br><br>
+        <form>
+            <select id="product_category">
+                <option value="all">Все категории</option>
+                <script>
+                    let cat_info = {};
+                    {% for category in category_list %}
+                        cat_info['{{ category.id }}'] = {
+                            cat_name: '{{ category.name }}',
+                            cat_parent: '{{ category.parent.id }}'
+                        };
+                    {% endfor %}
+                    function select(parentID, deep) {
+                        for (key in cat_info) {
+                            if (cat_info[key].cat_parent == parentID) {
+                                document.write('<option value="' + key + '">' + "&nbsp;".repeat(deep*3) + cat_info[key].cat_name + '</option>');
+                                delete cat_info[key];
+                                select(key, deep + 1);
+                            }
+                        }
+                    }
+                    select("", 0);
+                </script>
+            </select>
+            <label for="product_search">Поиск: </label>
+            <input type="search" id="product_search">
+        </form>
+        <br>
+        {% if product_list %}
+            <div id="page_content">{% include page_template %}</div>
+        {% else %}
+            <p>В каталоге нет товаров.</p>
+        {% endif %}
+        {% load static %}
+        <script>window.CSRF_TOKEN = "{{ csrf_token }}";</script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="{% static 'js/product_list.js' %}"></script>
+    {% else %}
+        <p>Авторизуйтесь для того, чтобы просмотреть данную страницу</p>
+    {% endif %}
+    {% load static %}
+{% endblock %}

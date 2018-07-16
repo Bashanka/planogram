@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    {% block title %}<title>Планограмм</title>{% endblock %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Добавление дополнительного статического CSS файла -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        {% if maker_check and user.is_authenticated %}
+            <div class="collapse navbar-collapse navbar-left">
+                <ul class="nav navbar-nav">
+                    <li><a id="addProduct" href="javascript:void(0);" class="btn btn-outline-primary">+ продукт</a></li>
+                    <li><a id="addHook" href="javascript:void(0);" class="btn btn-outline-primary">+ крючок</a></li>
+                    <li><a id="adhesion2" href="javascript:void(0);"><span
+                            class="glyphicon glyphicon-object-align-bottom" title="прилипание к полкам"></span></a></li>
+                    <li><a id="pixelNav" href="javascript:void(0);"><span class="glyphicon glyphicon-fullscreen"
+                                                                          title="перемещение выделенного объекта стрелками"></span></a>
+                    </li>
+                    <li><a id="startScale" href="javascript:void(0);"><span
+                            class="glyphicon glyphicon-modal-window" title="вернуть исходный масштаб"></span></a></li>
+                    <li><a id="savedPlanograms" href="javascript:void(0);"
+                           class="btn btn-outline-primary">Сохраненные</a>
+                    </li>
+                    <li><a id="savePlanogram" href="javascript:void(0);" class="btn btn-outline-primary">Сохранить</a>
+                    </li>
+                    <li><a id="imageOutput" href="javascript:void(0);" class="btn btn-outline-primary">Выгрузить
+                        изображение</a></li>
+                </ul>
+            </div>
+        {% endif %}
+        <div class="collapse navbar-collapse navbar-right">
+            {% block sidebar %}
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span></a></li>
+                    <li><a href="{% url 'maker' %}">Планограмма</a></li>
+                    <li><a href="{% url 'products' %}" target="_blank">Каталог</a></li>
+
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'logout' %}?next={{ request.path }}">Выйти?</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}?next={{ request.path }}">Войти?</a></li>
+                    {% endif %}
+                </ul>
+            {% endblock %}
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="content">
+            {% block content %}{% endblock %}
+
+            {% block pagination %}
+                {% if is_paginated %}
+                    <div class="pagination">
+                        <span class="page-links">
+                            {% if page_obj.has_previous %}
+                                <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+                            {% endif %}
+                            <span class="page-current">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </span>
+                            {% if page_obj.has_next %}
+                                <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                {% endif %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

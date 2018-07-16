@@ -1,0 +1,16 @@
+{% if planogram_list %}
+    <select id="selectPlanogam">
+        <option value="">...</option>
+        {% for planogram in planogram_list %}
+            <option value="{{ planogram.id }}">{{ planogram.title }}</option>
+        {% endfor %}
+    </select>
+    <a id="delete_planogram" href="">
+        <img src="/static/admin/img/icon-deletelink.svg" alt="Удалить">
+    </a>
+    <br>
+    <br>
+    <button id="openPlanogram" class="btn btn-primary">Открыть</button>
+{% else %}
+    <p>Нет сохранненых планограмм</p>
+{% endif %}

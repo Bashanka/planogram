@@ -1,0 +1,15 @@
+{% if product_list == false %}
+<label for="catalog">Товаров в каталоге нет</label>
+{% else %}
+{% for product in product_list %}
+<div class="product" onclick="addProduct(this)">
+    <img src="{{ product.image.url }}">
+
+    <p class="title">{{ product.title }}</p>
+    <p class="vendor_code">{{ product.vendor_code }}</p>
+    <p class="category">{{ product.category }}</p>
+    <p class="size">{{ product.width }}x{{ product.height }}x{{ product.length }}</p>
+
+</div>
+{% endfor %}
+{% endif %}

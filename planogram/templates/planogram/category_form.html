@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h3>Добавить/Изменить категорию</h3>
+    <table>{{ form.as_table }}</table>
+    <br>
+    <input type="submit" value="Отправить" class="btn btn-primary"/>
+</form>
+    {%  else %}
+        <p>Авторизуйтесь, чтобы получить доступ к странице</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h3>Импортировать товары</h3>
+    <form action="import.html" method="post">
+        {{ form }}
+        <br>
+        <input type="submit" value="OK" class="btn btn-primary">
+    </form>
+    {%  else %}
+        <p>Авторизуйтесь, чтобы получить доступ к странице</p>
+    {% endif %}
+{% endblock %}

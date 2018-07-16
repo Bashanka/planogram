@@ -1,0 +1,106 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="panel panel-default">
+            <div class="panel-heading">Стеллаж (размеры в см.)</div>
+            <div class="panel-body">
+                <div class="rack">
+                    <form name="rack_settings" id="rack_settings">
+                        <label for="rack_color">Цвет:</label>
+                        <input type="color" name="rack_color" id="rack_color" value="#cccccc">
+                        <label for="rack_height">В:</label>
+                        <input type="number" name="rack_height" id="rack_height">
+                        <label for="rack_width">Ш:</label>
+                        <input type="number" name="rack_width" id="rack_width">
+                        <label for="rack_deep">Г:</label>
+                        <input type="number" name="rack_deep" id="rack_deep">
+                        <label for="shelf_thickness">Толщина полки: </label>
+                        <input type="number" name="shelf_thickness" id="shelf_thickness">
+                        <a id="addShelf" class="btn btn-default"
+                           title="Высота от пола до полки в см. по умолчанию толщина полки 5см.">+ полку</a>
+                        <span id="rack_shelfs"></span>
+                    </form>
+
+                    <button id="rackButton" class="btn btn-primary">Создать стеллаж</button>
+                </div>
+            </div>
+        </div>
+        <div class="maker">
+            <div class="makerCnv">
+                <canvas id="cnv" width="1200" height="900">Ваш браузер не поддерживает HTML5 Canvas</canvas>
+            </div>
+        </div>
+        <div id="productInfo"></div>
+        <div class="popup">
+            <a class="close" href="javascript:void(0);">Закрыть</a>
+            <h3>Выберите товар <a id="refresh"><img src="/media/home/refresh.png" width="20" height="20"></a></h3>
+            <form action="" method="post" accept-charset="utf-8">
+                {% if category_list != false %}
+                    <select id="categorySelect" class="form-control">
+                        {% include category_template %}
+                    </select>
+                {% endif %}
+                <br><span>Поиск: </span><input type="search" id="productSearch"><br>
+            </form>
+            <div id="page_content">{% include page_template %}</div>
+            <button id="loadButton" class="btn btn-primary">Показать еще</button>
+            <br>
+        </div>
+        <div id="changeProductInfo">
+            <a class="close" href="javascript:void(0);">Закрыть</a>
+            <h3>Изменить количество</h3>
+            <div id="getProductInfo"></div>
+            <button id="setProductInfo" class="btn btn-primary">Применить</button>
+        </div>
+        <div id="savedPlanogramsPopup">
+            <a class="close" href="javascript:void(0);">Закрыть</a>
+            <h3>Выберите планограмму</h3>
+            <div id="planograms">
+                {% if planogram_list %}
+                    <select id="selectPlanogam">
+                        <option value="">...</option>
+                        {% for planogram in planogram_list %}
+                            <option value="{{ planogram.id }}">{{ planogram.title }}</option>
+                        {% endfor %}
+                    </select>
+                    <a id="delete_planogram" href="javascript:void(0);">
+                        <img src="/static/admin/img/icon-deletelink.svg" alt="Удалить">
+                    </a>
+                    <br>
+                    <br>
+                    <button id="openPlanogram" class="btn btn-primary">Открыть</button>
+                {% else %}
+                    <p>Нет сохранненых планограмм</p>
+                {% endif %}
+            </div>
+        </div>
+        <div id="savePlanogramPopup">
+            <a class="close" href="javascript:void(0);">Закрыть</a>
+            <h3>Сохранить как:</h3>
+            <form>
+                <input type="text">
+            </form>
+            <br>
+            <button id="savePlanogramAs" class="btn btn-primary">Сохранить</button>
+        </div>
+        <div id="imageOutputPopup">
+            <a class="close" href="javascript:void(0);">Закрыть</a>
+            <h3>Имя планограммы:</h3>
+            <form>
+                <input type="text">
+            </form>
+            <br>
+            <button id="imageOutputBtn" class="btn btn-primary">Скачать</button>
+        </div>
+        <div id="img"></div>
+        {% load static %}
+        <script>window.CSRF_TOKEN = "{{ csrf_token }}";</script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="{% static 'js/jcanvas.js' %}"></script>
+        <script src="{% static 'js/maker.js' %}"></script>
+    {% else %}
+        <p>Авторизуйтесь, чтобы иметь доступ к планограмму</p>
+    {% endif %}
+
+{% endblock %}
